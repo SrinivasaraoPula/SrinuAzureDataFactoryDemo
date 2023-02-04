@@ -1,0 +1,58 @@
+{
+	"name": "pl_ if activity demo",
+	"properties": {
+		"activities": [
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@bool(pipeline().parameters.outputfolder)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "faill",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Success",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"outputfolder": {
+				"type": "bool",
+				"defaultValue": true
+			},
+			"pass": {
+				"type": "string",
+				"defaultValue": "pass"
+			},
+			"fail": {
+				"type": "string",
+				"defaultValue": "fail"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-30T05:46:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

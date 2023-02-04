@@ -1,0 +1,20 @@
+{
+	"name": "powerquery_demo",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "ds_blob_input",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ds_blob_input",
+					"dataset": {
+						"referenceName": "ds_blob_input",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"script": "section Section1;\r\nshared ds_blob_input = let AdfDoc = AzureStorage.BlobContents(\"https://teststoragaccount.blob.core.windows.net/demo/input/Emp.csv\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]) in  PromotedHeaders;\r\nshared UserQuery = let Source = #\"ds_blob_input\",\r\n  #\"Removed columns\" = Table.RemoveColumns(Source, {\"department\"}) in #\"Removed columns\";\r\n",
+			"documentLocale": "en-us"
+		}
+	}
+}

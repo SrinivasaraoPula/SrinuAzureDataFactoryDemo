@@ -1,0 +1,34 @@
+{
+	"name": "pl_setvariable demo",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "filetype",
+					"value": {
+						"value": "@replace(pipeline().parameters.filename,'daily','')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"filename": {
+				"type": "string",
+				"defaultValue": "salesdaily"
+			}
+		},
+		"variables": {
+			"filetype": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-29T14:20:29Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,120 @@
+{
+	"name": "df_conditional split",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_blob_input",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_blob_result",
+						"type": "DatasetReference"
+					},
+					"name": "ITemployees"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_blob_result",
+						"type": "DatasetReference"
+					},
+					"name": "HRemployes"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_blob_result",
+						"type": "DatasetReference"
+					},
+					"name": "Payrolemp"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_blob_input",
+						"type": "DatasetReference"
+					},
+					"name": "otheremp"
+				}
+			],
+			"transformations": [
+				{
+					"name": "ITEmp"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          name as string,",
+				"          gender as string,",
+				"          salary as string,",
+				"          department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 split(equals(department,'1'),",
+				"     equals(department,'2'),",
+				"     equals(department,'3'),",
+				"     disjoint: false) ~> ITEmp@(ITEmployees, HREmployees, Payrollemployees, default)",
+				"ITEmp@ITEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as string,",
+				"          name as string,",
+				"          gender as string,",
+				"          salary as string,",
+				"          department as string",
+				"     ),",
+				"     partitionFileNames:['ITEmployees'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> ITemployees",
+				"ITEmp@HREmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as string,",
+				"          name as string,",
+				"          gender as string,",
+				"          salary as string,",
+				"          department as string",
+				"     ),",
+				"     partitionFileNames:['HRemployes'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> HRemployes",
+				"ITEmp@Payrollemployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as string,",
+				"          name as string,",
+				"          gender as string,",
+				"          salary as string,",
+				"          department as string",
+				"     ),",
+				"     partitionFileNames:['payrollemp'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> Payrolemp",
+				"ITEmp@default sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as string,",
+				"          name as string,",
+				"          gender as string,",
+				"          salary as string,",
+				"          department as string",
+				"     ),",
+				"     partitionFileNames:['defaultemp'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> otheremp"
+			]
+		}
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"name": "srinupula-df-test-1",
+	"properties": {
+		"globalConfigurations": {
+			"PipelineBillingEnabled": "true"
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "da4998c6-5c6c-4e16-b020-6013404286b8",
+		"tenantId": "0d8ead90-520b-4a6a-8fca-110657c33a56"
+	}
+}
